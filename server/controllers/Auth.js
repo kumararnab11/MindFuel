@@ -88,7 +88,6 @@ exports.signUp = async (req, res) => {
 
     //find most recent OTP stored for the user
     const recentOtp = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
-    console.log("detched otp is",recentOtp[0].otp);
     //validate OTP
     if (recentOtp.length === 0) {
       //OTP not found
@@ -210,42 +209,56 @@ exports.login = async (req, res) => {
 
 //change password
 
-exports.changePassword = async (req,res) => {
-  try{
-    //body me se data nikale
-    const {password} =req.body;
-    const id= req.user.id;
-    //validate kro
-    if(!id || !password || !confirmPassword){
+exports.changePassword = async (req, res) => {
+  try {
+    // Extract password and confirmPassword
+    const { password, confirmPassword } = req.body;
+    const id = req.user.id;
+
+    // Validate inputs
+    if (!id || !password || !confirmPassword) {
       return res.status(400).json({
-        success:false,
+        success: false,
         message: 'All fields are required, please try again',
-      })
+      });
     }
-    //hash password
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Passwords do not match',
+      });
+    }
+
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-    //db me update kro
-    const updatedUser = await User.findByIdAndUpdate( {_id:id},
-                                                {password:hashedPassword},
-                                                {new:true})
-    // Check if user was found and updated
+
+    // Update the user password in DB
+    const updatedUser = await User.findByIdAndUpdate(
+      { _id: id },
+      { password: hashedPassword },
+      { new: true }
+    );
+
+    // Check if update was successful
     if (!updatedUser) {
       return res.status(404).json({
         success: false,
         message: 'User not found or password could not be updated.',
       });
     }
-    //return kro
+
+    // Respond with success
     return res.status(200).json({
-      success:true,
-      message:"password changed successfully",
-    })
+      success: true,
+      message: 'Password changed successfully',
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error in changing password',
+    });
   }
-  catch{
-    console.log(error); 
-        return res.status(500).json({
-            success: false,
-            message: 'Error in chnaging password',
-        });
-  }
-}
+};

@@ -6,7 +6,7 @@ const { auth } = require("../middlewares/auth")
 const {resetPassword,resetPasswordToken} =require('../controllers/ResetPassword')
 
 //route for login
-router.get('/login',auth,login);
+router.get('/login',login);
 
 // Route for user signup
 router.post("/signup", signUp)

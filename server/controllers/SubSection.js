@@ -28,7 +28,7 @@ exports.createSubSection = async (req, res) => {
 			timeDuration: timeDuration,
 			description: description,
 			videoUrl: uploadDetails.secure_url,
-			videPublicId: uploadDetails.public_id
+			videoPublicId: uploadDetails.public_id
 		});
 
 		//update section with this sub section ObjectID

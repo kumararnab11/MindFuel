@@ -4,6 +4,7 @@ import HighlightText from "../components/core/Homepage/HighlightText";
 import CTAButton from "../components/core/Homepage/CTAbutton"
 import Banner from '../assets/banner.mp4'
 import CodeBlocks from "../components/core/Homepage/CodeBlock";
+import TimelineSection from "../components/core/Homepage/TimeLineSection";
 
 const Home = () => {
   return (
@@ -122,6 +123,46 @@ const Home = () => {
             />
         </div>
 
+      </div>
+      {/*Section2 */}
+      <div className="bg-pure-greys-5 text-richblack-700">
+        <div className="homepage_bg h-[333px]">
+          <div className='w-11/12 max-w-maxContent flex flex-col items-center justify-between gap-5 mx-auto'>
+            <div className="h-[150px]"></div>
+              <div className='flex flex-row gap-7 text-white '>
+                  <CTAButton active={true} linkto={"/signup"}>
+                      <div className='flex items-center gap-3' >
+                          Explore Full Catalog
+                          <FaArrowRight />
+                      </div>
+                  </CTAButton>
+                  <CTAButton active={false} linkto={"/signup"}>
+                      <div>
+                          Learn more
+                      </div>
+                  </CTAButton>
+              </div>
+          </div>
+        </div>
+        <div className='mx-auto w-11/12 max-w-[1080px] flex flex-col items-center justify-between gap-7'>
+            <div className="flex flex-row gap-5 mb-10 mt-[95px]">
+                <div className='text-4xl font-semibold '>
+                    Get the Skills you need for a
+                    <HighlightText text={"Job that is in demand"} />
+                </div>
+                <div className='flex flex-col gap-10 items-start'>
+                    <div className='text-[16px]'>
+                        The modern StudyNotion is the dictates its own terms. Today, to be a competitive specialist requires more than professional skills.
+                    </div>
+                    <CTAButton active={true} linkto={"/signup"}>
+                        <div>
+                            Learn more
+                        </div>
+                    </CTAButton>
+                </div>
+            </div>
+            <TimelineSection/>
+        </div>
       </div>
     </div>
   );

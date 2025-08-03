@@ -7,13 +7,16 @@ const { uploadImageToCloudinary } = require("../utils/imageUploader");
 exports.createCourse = async (req, res) => {
   try {
     //fetch data
+    console.log(req.body);
     const { courseName, courseDescription, whatYouWillLearn, price, category } = req.body;
 
     //get thumbnail
-    const thumbnail = req.files.thumbnailImage;
+    const thumbnail = req.files.thumbnail;
+
+    if(!thumbnail)console.log("no");
 
     //validation
-    if (!courseName || !courseDescription || !whatYouWillLearn || !price || !tag || !thumbnail) {
+    if (!courseName || !courseDescription || !whatYouWillLearn || !price || !category || !thumbnail) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",

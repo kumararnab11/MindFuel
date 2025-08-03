@@ -14,9 +14,9 @@ const {
 // *                                 Profile routes                                       *
 // ****************************************************************************************
 // Delete User Account
-router.delete("/deleteProfile", deleteAccount)
-router.put("/updateProfile", auth, updateProfile)
-router.get("/getUserDetails", auth, getAllUserDetails)
+router.delete("/deleteProfile",auth, deleteAccount)
+router.put("/update-profile", auth, updateProfile)
+router.get("/getUser-details", auth, getAllUserDetails)
 // Get Enrolled Courses
 router.get("/getEnrolledCourses", auth, getEnrolledCourses)
 //router.put("/updateDisplayPicture", auth, updateDisplayPicture)

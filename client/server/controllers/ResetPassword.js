@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const mailSender = require("../utils/mailSender");
 const bcrypt=require('bcrypt')
+const crypto=require('crypto')
 
 //resetPasswordToken
 exports.resetPasswordToken = async (req, res) => {
@@ -82,7 +83,7 @@ exports.resetPassword = async (req, res) => {
         //password update
         await User.findOneAndUpdate(
             { token: token },
-            { hashedPassword },
+            { password:hashedPassword },
             { new: true },
         );
         //return response

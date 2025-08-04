@@ -56,15 +56,15 @@ const TimelineSection = () => {
 
         <div className="absolute bg-caribbeangreen-700 flex flex-row text-white uppercase py-5 left-[50%] translate-x-[-50%] translate-y-[-50%]">
           <div className="flex flex-row gap-5 items-center border-r border-caribbeangreen-300 px-7">
-            <p className="text-3xl font-bold">
+            <div className="text-3xl font-bold">
               <CountUp max={10} duration={1000}/>
-            </p>
+            </div>
             <p className="text-caribbeangreen-300 text-sm">Years of Experience</p>
           </div>
           <div className="flex gap-5 items-center px-7">
-            <p className="text-3xl font-bold">
+            <div className="text-3xl font-bold">
               <CountUp max={250} duration={2000}/>
-            </p>
+            </div>
             <p className="text-caribbeangreen-300 text-sm">Type of Courses</p>
           </div>
         </div>

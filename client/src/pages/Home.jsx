@@ -5,7 +5,9 @@ import CTAButton from "../components/core/Homepage/CTAbutton"
 import Banner from '../assets/banner.mp4'
 import CodeBlocks from "../components/core/Homepage/CodeBlock";
 import TimelineSection from "../components/core/Homepage/TimeLineSection";
-
+import LearningLanguageSection from "../components/core/Homepage/LearningLanguageSection";
+import InstructorSection from "../components/core/Homepage/InstructorSection";
+import ExploreMore from "../components/core/Homepage/ExploreMore";
 const Home = () => {
   return (
     <div>
@@ -123,12 +125,14 @@ const Home = () => {
             />
         </div>
 
+        <ExploreMore/>
+
       </div>
       {/*Section2 */}
       <div className="bg-pure-greys-5 text-richblack-700">
         <div className="homepage_bg h-[333px]">
           <div className='w-11/12 max-w-maxContent flex flex-col items-center justify-between gap-5 mx-auto'>
-            <div className="h-[150px]"></div>
+            <div className="h-[220px]"></div>
               <div className='flex flex-row gap-7 text-white '>
                   <CTAButton active={true} linkto={"/signup"}>
                       <div className='flex items-center gap-3' >
@@ -162,8 +166,15 @@ const Home = () => {
                 </div>
             </div>
             <TimelineSection/>
+            <LearningLanguageSection/>
         </div>
       </div>
+      {/*Section 3 */}
+        <div className='w-11/12 mx-auto max-w-[1080px] flex-col items-center justify-between gap-8 bg-richblack-900 text-white'>
+            <InstructorSection />
+            <h2 className='text-center text-4xl font-semobold mt-10'>review from Other Learners</h2>
+            {/* Review Slider here */}
+        </div>
     </div>
   );
 };

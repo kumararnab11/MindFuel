@@ -6,5 +6,6 @@ export const categories = {
 
 export const auth = {
   LOGIN_API: BASE_URL + "/auth/login",
-  SIGNUP_API: BASE_URL + "/auth/signup"
+  SIGNUP_API: BASE_URL + "/auth/signup",
+  RESET_TOKEN_API: BASE_URL + "/auth/reset-password-token"
 }

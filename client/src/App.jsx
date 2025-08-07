@@ -4,6 +4,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Navbar from './components/common/Navbar'
+import ForgotPassword from './pages/ForgotPassword'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/"element={<><Navbar/><Home/></>}/>
         <Route path="/login"element={<Login/>}/>
         <Route path="/signup"element={<Signup/>}/>
+        <Route path="/reset-password"element={<ForgotPassword/>}/>
       </Routes>
     </div>
   )

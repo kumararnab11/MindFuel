@@ -155,7 +155,7 @@ exports.login = async (req, res) => {
         }
 
         // User check exist or not
-        const user = await User.findOne({ email });
+        const user = await User.findOne( {email} );
 
         if (!user) {
             return res.status(401).json({

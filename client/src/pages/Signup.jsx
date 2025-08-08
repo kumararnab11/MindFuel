@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import SignupImg from "../assets/signup.webp";
 import Input from "../components/core/Input";
 import CTAButton from "../components/core/Homepage/CTAbutton";
+import { setSignupData } from "../slices/authSlice";
+import { sendOtpApi } from "../services/sendOtpApi";
 
 const tabsName = [
   "Student",
@@ -9,18 +13,46 @@ const tabsName = [
 ];
 
 function Signup() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [currentTab, setCurrentTab] = useState("Student");
+  // Hooks must be called at the top level of the component
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { loading } = useSelector((state) => state.auth); // Added useSelector for loading state
+  const {signUpdata} = useSelector((state)=>state.auth);
 
+  const [email, setEmail] = useState(signUpdata?signUpdata.email:"");
+  const [password, setPassword] = useState(signUpdata?signUpdata.password:"")
+  const [confirmPassword, setConfirmPassword] = useState(signUpdata?signUpdata.confirmPassword:"")
+  const [firstName, setFirstName] = useState(signUpdata?signUpdata.firstName:"")
+  const [lastName, setLastName] = useState(signUpdata?signUpdata.lastName:"")
+  const [currentTab, setCurrentTab] = useState(signUpdata?signUpdata.accountType:"Student");
 
-  //SignupHandler
+  // Handler for the signup process
+  useEffect(() => {
+    console.log("Updated signup data:", signUpdata);
+  }, [signUpdata]);
+  const signupHandler = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(setSignupData({
+        email,
+        password,
+        confirmPassword,
+        firstName,
+        lastName,
+        accountType: currentTab,
+      }));
+
+      console.log("signup data :", signUpdata);
+      
+      await sendOtpApi({ email, navigate });
+
+    } catch (error) {
+      console.error("Signup handler error: ", error);
+    }
+  };
 
   return (
-    <div className="flex flex-col md:flex-row-reverse max-w-[1080px] mx-auto my-auto items-center justify-between gap-10 py-12 px-4">
+    <div className="flex py-12 flex-col md:flex-row-reverse max-w-[1080px] mx-auto my-auto items-center justify-between gap-10 px-4">
       {/* Welcome Section */}
       <div className="w-full md:hidden order-1">
         <h1 className="text-3xl font-bold text-richblack-50">Join US</h1>
@@ -49,12 +81,12 @@ function Signup() {
           <h2 className="text-pure-greys-25">
             Build skills for today, tomorrow, and beyond.
           </h2>
-          <h2 className="font-edu-sa text-blue-200 mb-5">
+          <h2 className="font-edu-sa text-blue-200 mb-[5px]">
             Education to future-proof your career.
           </h2>
         </div>
 
-        <div className="mt-5 flex flex-wrap w-fit justify-center rounded-full bg-richblack-800 mb-5 border px-1 py-1 border-richblack-100">
+        <div className="mt-5 flex flex-wrap w-fit justify-center rounded-full bg-richblack-800 border px-1 py-1 border-richblack-100">
             {tabsName.map((tab, index) => (
             <div
                 key={index}
@@ -70,52 +102,60 @@ function Signup() {
             </div>
             ))}
         </div>
+        
+        {/* Wrap form fields in a <form> and add onSubmit */}
+        <form onSubmit={signupHandler}>
+            <div className="flex flex-row gap-3 mb-[12px]">
+                <Input
+                label="First Name"
+                placeholder="Enter your First Name"
+                inputValue={firstName}
+                setInputValue={setFirstName}
+                type="text"
+                />
 
-        <div className="flex flex-row gap-3">
-            <Input
-            label="First Name"
-            placeholder="Enter your First Name"
-            inputValue={firstName}
-            setInputValue={setFirstName}
-            type="text"
-            />
-
-            <Input
-            label="Last Name"
-            placeholder="Enter your Last Name"
-            inputValue={lastName}
-            setInputValue={setLastName}
-            type="text"
-            />
-        </div>
-
-        <Input
-            label="Email Address"
-            placeholder="Enter your email"
-            inputValue={email}
-            setInputValue={setEmail}
-            type="email"
-        />
-
-        <div className="flex flex-row gap-3">
-            <Input
-            label="Password"
-            placeholder="Enter your password"
-            inputValue={password}
-            setInputValue={setPassword}
-            type="password"
-            />
+                <Input
+                label="Last Name"
+                placeholder="Enter your Last Name"
+                inputValue={lastName}
+                setInputValue={setLastName}
+                type="text"
+                />
+            </div>
 
             <Input
-            label="Confirm Password"
-            placeholder="Re enter your password"
-            inputValue={confirmPassword}
-            setInputValue={setConfirmPassword}
-            type="password"
+                label="Email Address"
+                placeholder="Enter your email"
+                inputValue={email}
+                setInputValue={setEmail}
+                type="email"
             />
-        </div>
 
-        <CTAButton active={true}>Signup</CTAButton>
+            <div className="flex flex-row gap-3 my-[12px]">
+                <Input
+                label="Password"
+                placeholder="Enter your password"
+                inputValue={password}
+                setInputValue={setPassword}
+                type="password"
+                />
+
+                <Input
+                label="Confirm Password"
+                placeholder="Re enter your password"
+                inputValue={confirmPassword}
+                setInputValue={setConfirmPassword}
+                type="password"
+                />
+            </div>
+            <button
+              type="submit"
+              className="text-center my-[10px] text-[13px] px-6 py-3 rounded-md font-bold
+              bg-yellow-50 text-black hover:scale-95 transition-all duration-200"
+            >
+              Submit
+            </button>
+        </form>
       </div>
     </div>
   );

@@ -173,7 +173,7 @@ exports.login = async (req, res) => {
             };
 
             const token = jwt.sign(payload, process.env.JWT_SECRET, {
-                expiresIn: "2h",
+                expiresIn: "3d",
             });
 
             user.token = token;
@@ -183,6 +183,8 @@ exports.login = async (req, res) => {
             const options = {
                 expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), 
                 httpOnly: true, 
+                secure: true,
+                sameSite:"None"
             };
 
             res.cookie("token", token, options).status(200).json({
@@ -259,6 +261,41 @@ exports.changePassword = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'Error in changing password',
+    });
+  }
+};
+
+
+
+//logout
+
+// controllers/authController.js
+exports.logout = (req, res) => {
+  try {
+    // Optional validation: check if cookie exists
+    if (!req.cookies?.token) {
+      return res.status(200).json({
+        success: true,
+        message: "No active session found",
+      });
+    }
+
+    // Clear the cookie securely
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None"
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Error during logout",
     });
   }
 };

@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 
-const {signUp,login,changePassword,sendOTP} = require('../controllers/Auth')
+const {signUp,login,changePassword,sendOTP, logout} = require('../controllers/Auth')
 const { auth } = require("../middlewares/auth")
 const {resetPassword,resetPasswordToken} =require('../controllers/ResetPassword')
 
@@ -16,6 +16,9 @@ router.post("/sendotp", sendOTP)
 
 // Route for Changing the password
 router.post("/changepassword", auth, changePassword)
+
+//Route for clearing cookie during logout
+router.post("/logout",logout);
 
 // ******************************************************
 //                 Reset Password

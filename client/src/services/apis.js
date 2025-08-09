@@ -9,5 +9,10 @@ export const auth = {
   SIGNUP_API: BASE_URL + "/auth/signup",
   RESET_TOKEN_API: BASE_URL + "/auth/reset-password-token",
   RESET_PASSWORD_API: BASE_URL + "/auth/reset-password",
-  SEND_OTP_API:BASE_URL + "/auth/sendotp"
+  SEND_OTP_API:BASE_URL + "/auth/sendotp",
+  LOGOUT_API:BASE_URL+'/auth/logout'
+}
+
+export const profile = {
+  UPDATE_PROFILE:BASE_URL+"/profile/update-profile"
 }

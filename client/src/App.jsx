@@ -7,6 +7,13 @@ import Navbar from './components/common/Navbar'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import Otp from './pages/Otp'
+import AboutUs from './pages/AboutUs'
+import Dashboard from './pages/Dashboard'
+import PrivateRoute from './components/core/Auth/PrivateRoute'
+import MyProfile from './components/core/Dashboard/MyProfile'
+import Settings from './components/core/Dashboard/Settings'
+import AddCourse from './components/core/Dashboard/AddCourse'
+import Contact from './pages/Contact'
 
 function App() {
   return (
@@ -18,6 +25,19 @@ function App() {
         <Route path="/reset-password"element={<ForgotPassword/>}/>
         <Route path="/update-password/:token" element={<ResetPassword />} />
         <Route path="/verify-email"element={<Otp/>}/>
+        <Route path="/about"element={<><Navbar/><AboutUs/></>}/>
+        <Route path="/contact"element={<><Navbar/><Contact/></>}/>
+        <Route
+          element={
+            <PrivateRoute>
+              <Dashboard/>
+            </PrivateRoute>
+          }
+        >
+          <Route path='/dashboard/my-profile' element={<MyProfile/>}/>
+          <Route path='/dashboard/settings' element={<Settings/>}/>
+          <Route path="/dashboard/add-course" element={<AddCourse/>}/>
+        </Route>
       </Routes>
     </div>
   )

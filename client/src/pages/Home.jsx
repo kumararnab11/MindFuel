@@ -8,19 +8,30 @@ import TimelineSection from "../components/core/Homepage/TimeLineSection";
 import LearningLanguageSection from "../components/core/Homepage/LearningLanguageSection";
 import InstructorSection from "../components/core/Homepage/InstructorSection";
 import ExploreMore from "../components/core/Homepage/ExploreMore";
+import { useSelector } from 'react-redux';
+
 const Home = () => {
+    const { user } = useSelector((state) => state.user);
+
   return (
     <div>
       {/*Section1 */}
       <div className='relative mx-auto flex flex-col w-11/12 items-center text-richblack-200 justify-between max-w-[1080px]'>
-        <Link to={"/signup"}>
-          <div className='group mt-16 p-1 mx-auto rounded-full bg-richblack-800 font-bold transition-all duration-200 hover:scale-95 w-fit'>
-            <div className='flex flex-row items-center gap-2 rounded-full px-10 py-[5px] transition-all duration-200 group-hover:bg-richblack-900'>
-              <p>Become an Instructor</p>
-              <FaArrowRight />
-            </div>
-          </div>
-        </Link>
+        {
+            user?.accountType != 'Instructor'
+            &&
+            (
+                <Link to={"/signup"}>
+                    <div className='group mt-16 p-1 mx-auto rounded-full bg-richblack-800 font-bold transition-all duration-200 hover:scale-95 w-fit'>
+                        <div className='flex flex-row items-center gap-2 rounded-full px-10 py-[5px] transition-all duration-200 group-hover:bg-richblack-900'>
+                        <p>Become an Instructor</p>
+                        <FaArrowRight />
+                        </div>
+                    </div>
+                </Link>
+            )
+        }
+        
         <div className='text-center text-4xl font-semibold mt-7'>
             Empower Your Future with
             <HighlightText text={"Coding Skills"} />
@@ -170,11 +181,18 @@ const Home = () => {
         </div>
       </div>
       {/*Section 3 */}
-        <div className='w-11/12 mx-auto max-w-[1080px] flex-col items-center justify-between gap-8 bg-richblack-900 text-white'>
-            <InstructorSection />
-            <h2 className='text-center text-4xl font-semobold mt-10'>review from Other Learners</h2>
-            {/* Review Slider here */}
-        </div>
+        {
+            user?.accountType !== 'Instructor'
+            &&
+            (
+                <div className='w-11/12 mx-auto max-w-[1080px] flex-col items-center justify-between gap-8 bg-richblack-900 text-white'>
+                    <InstructorSection />
+                    <h2 className='text-center text-4xl font-semobold mt-10'>review from Other Learners</h2>
+                    {/* Review Slider here */}
+                </div>
+            )
+        }
+        
     </div>
   );
 };

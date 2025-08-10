@@ -16,3 +16,7 @@ export const auth = {
 export const profile = {
   UPDATE_PROFILE:BASE_URL+"/profile/update-profile"
 }
+
+export const courses = {
+  ADD_COURSE_API:BASE_URL+"/course/createCourse"
+}

@@ -9,7 +9,8 @@ exports.createCourse = async (req, res) => {
     //fetch data
     console.log(req.body);
     const { courseName, courseDescription, whatYouWillLearn, price, category } = req.body;
-
+    const instruction= JSON.parse(req.body.instruction);
+    const tag= JSON.parse(req.body.tag);
     //get thumbnail
     const thumbnail = req.files.thumbnail;
 
@@ -40,7 +41,7 @@ exports.createCourse = async (req, res) => {
     if (!categoryDetails) {
       return res.status(404).json({
         success: false,
-        message: "Tag Details not found",
+        message: "Category Details not found",
       });
     }
 
@@ -59,6 +60,8 @@ exports.createCourse = async (req, res) => {
       price,
       category: categoryDetails._id,
       thumbnail: thumbnailImage.secure_url,
+      tag,
+      instruction
     });
 
     //add the new course to the user schema of Instructor

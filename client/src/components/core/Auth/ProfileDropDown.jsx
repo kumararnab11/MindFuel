@@ -1,26 +1,35 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { deleteUser } from "../../../slices/userSlice";
-import { removeToken } from "../../../slices/authSlice"; // assuming you have a token slice
 import { MdDashboard } from "react-icons/md";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import useLogout from "../../../services/logout";
+import ConfirmationModal from "../../common/ConfirmationModal";
 
 function ProfileDropDown() {
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
+  const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
 
   const user = useSelector((state) => state.user.user);
   const logout = useLogout();
 
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (!e.target.closest(".profile-dropdown")) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const handleLogout = () => {
-    logout();
+    setOpenModal(true);
   };
 
   return (
-    <div className="relative">
+    <div className="relative profile-dropdown">
       {/* Avatar Button */}
       <button
         onClick={() => setOpen((prev) => !prev)}
@@ -33,7 +42,7 @@ function ProfileDropDown() {
             className="w-8 h-8 rounded-full object-cover"
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-red-700 flex items-center justify-center text-white text-sm uppercase">
+          <div className="w-8 h-8 rounded-full bg-red-700 flex items-center justify-center text-white text-sm uppercase font-semibold">
             {user?.firstName?.charAt(0) || "U"}
           </div>
         )}
@@ -47,17 +56,36 @@ function ProfileDropDown() {
               navigate("/dashboard/my-profile");
               setOpen(false);
             }}
-            className="text-richblack-300 w-full text-left px-4 py-2 hover:bg-richblack-700 flex gap-2 items-center"
+            className="text-richblack-300 w-full text-left px-4 py-2 hover:bg-richblack-700 transition-colors duration-200 flex gap-2 items-center"
           >
-            <MdDashboard/> Dashboard
+            <MdDashboard /> Dashboard
           </button>
           <button
             onClick={handleLogout}
-            className="text-richblack-300 w-full text-left px-4 py-2 hover:bg-richblack-700 flex gap-2 items-center"
+            className="text-richblack-300 w-full text-left px-4 py-2 hover:bg-richblack-700 transition-colors duration-200 flex gap-2 items-center"
           >
-            <RiLogoutBoxRLine/> Logout
+            <RiLogoutBoxRLine /> Logout
           </button>
         </div>
+      )}
+
+      {/* Confirmation Modal */}
+      {openModal && (
+        <ConfirmationModal
+          modalData={{
+            text1: "Logout?",
+            text2: "Are you sure you want to logout.",
+            btn1Text: "Logout",
+            btn2Text: "Cancel",
+            btn1Handler: () => {
+              setOpenModal(false);
+              logout();
+            },
+            btn2Handler: () => {
+              setOpenModal(false);
+            },
+          }}
+        />
       )}
     </div>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
-import { setStep } from "../../../slices/courseSlice"
+import { setCourse, setStep } from "../../../slices/courseSlice"
 import Input from '../Input'
 import RequirementField from "./RequirementField"
 import TagInput from "./TagInput"
@@ -108,6 +108,7 @@ const CourseInfo = () => {
       if (res?.data?.success) {
         console.log("Course created:", res.data.data);
         dispatch(setStep(2));
+        setCourse(res.data);
       } else {
         console.error("Create failed:", res?.data?.message);
       }

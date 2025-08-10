@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { VscSignOut, VscSettingsGear } from "react-icons/vsc";
 import SidebarLink from './SidebarLink';
 import ConfirmationModal from '../../common/ConfirmationModal';
-import logout from '../../../services/logout'
+import useLogout from '../../../services/logout'
 import { sidebarLinks } from '../../../data/sidebar';
 
 const Sidebar = () => {
@@ -12,6 +12,7 @@ const Sidebar = () => {
   //const { loading: authLoading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const logout = useLogout();
 
   const [confirmationModalData, setConfirmationModal] = useState(null);
 
@@ -57,7 +58,19 @@ const Sidebar = () => {
 
       {confirmationModalData && (
         <ConfirmationModal
-          modeldata = {confirmationModalData}
+          modalData={{
+            text1: "Logout?",
+            text2: "Are you sure you want to logout.",
+            btn1Text: "Logout",
+            btn2Text: "Cancel",
+            btn1Handler: () => {
+              setConfirmationModal(false);
+              logout();
+            },
+            btn2Handler: () => {
+              setConfirmationModal(null);
+            }
+          }}
         />
       )}
     </div>

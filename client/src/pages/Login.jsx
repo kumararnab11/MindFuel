@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import LoginImg from "../assets/login.webp";
 import Input from "../components/core/Input";
-import CTAButton from "../components/core/Homepage/CTAbutton";
 import { useDispatch } from "react-redux";
 import { setUser } from "../slices/userSlice";
 import toast from "react-hot-toast";
@@ -9,27 +8,35 @@ import { useNavigate } from "react-router-dom";
 import { apiConnector } from "../services/apiconnector";
 import { auth } from "../services/apis";
 import { setToken } from "../slices/authSlice";
+import { useForm } from "react-hook-form";
 
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const loginHandler = async ()=>{
-    try{
-      const response = await apiConnector("POST", auth.LOGIN_API,{email,password});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm();
+
+  const loginHandler = async (data) => {
+    try {
+      const response = await apiConnector("POST", auth.LOGIN_API, {
+        email: data.email,
+        password: data.password
+      });
       dispatch(setUser(response.data.user))
-      console.log("login details...",response);
+      console.log("login details...", response);
       dispatch(setToken(response.data.token));
       localStorage.setItem("token", JSON.stringify(response.data.token));
 
       toast.success("Logged in Successfully");
       navigate("/");
     }
-    catch(e){
+    catch (e) {
       console.log(e);
-        toast.error(e.response?.data?.message)
+      toast.error(e.response?.data?.message)
     }
   }
 
@@ -69,35 +76,41 @@ function Login() {
             Education to future-proof your career.
           </h2>
         </div>
+        <form onSubmit={handleSubmit(loginHandler)} className="flex flex-col gap-4">
+          <Input
+            label="Email Address"
+            placeholder="Enter your email"
+            {...register("email", { required: "Email is required" })}
+            type="email"
+          />
+          {errors.password && <p className="text-red-500 text-xs">{errors.password.message}</p>}
 
-        <Input
-          label="Email Address"
-          placeholder="Enter your email"
-          inputValue={email}
-          setInputValue={setEmail}
-          type="email"
-        />
+          <Input
+            label="Password"
+            placeholder="Enter your password"
+            {...register("password", { required: "Password is required" })}
+            type="password"
+          />
+          {errors.password && <p className="text-red-500 text-xs">{errors.password.message}</p>}
+          {/* Forgot Password Link */}
+          <div className="text-right">
+            <button
+              className="text-sm text-caribbeangreen-200 hover:underline transition duration-200"
+              onClick={() => alert("Redirect to forgot password page")}
+            >
+              Forgot Password?
+            </button>
+          </div>
+          
+            <button className="text-center text-[13px] px-6 py-3 rounded-md font-bold
+          bg-yellow-50 text-black
+            hover:scale-95 transition-all duration-200"
+              type="submit"
+            >
+              Login
+            </button>
+        </form>
 
-        <Input
-          label="Password"
-          placeholder="Enter your password"
-          inputValue={password}
-          setInputValue={setPassword}
-          type="password"
-        />
-
-        {/* Forgot Password Link */}
-        <div className="text-right">
-          <button
-            className="text-sm text-caribbeangreen-200 hover:underline transition duration-200"
-            onClick={() => alert("Redirect to forgot password page")}
-          >
-            Forgot Password?
-          </button>
-        </div>
-        <div onClick={loginHandler}>
-          <CTAButton active={true}>Login</CTAButton>
-        </div>       
       </div>
     </div>
   );

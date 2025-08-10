@@ -1,7 +1,6 @@
 // import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-// import Input from "../Input";
-import Input from "../Input1";
+import Input from "../Input";
 import toast from "react-hot-toast";
 import { setLoader } from "../../../slices/loaderSlice";
 import { apiConnector } from "../../../services/apiconnector";
@@ -13,13 +12,6 @@ const Settings = () => {
   const { user } = useSelector((state) => state.user);
   // const { loading } = useSelector((state) => state.loader);
   const dispatch = useDispatch();
-
-  // const [firstName] = useState(user?.firstName || "");
-  // const [lastName] = useState(user?.lastName || "");
-  // const [dateOfBirth, setDateOfBirth] = useState(user?.additionalDetails?.dateOfBirth||"");
-  // const [gender, setGender] = useState(user?.additionalDetails?.gender||"");
-  // const [contactNumber, setContactNumber] = useState(user?.additionalDetails?.contactNumber||"");
-  // const [about, setAbout] = useState(user?.additionalDetails?.about||"");
 
   const {
     register,
@@ -38,20 +30,9 @@ const Settings = () => {
   });
 
   const handleSave = async (data) => {
-    // dorkar nei ---> react hook form kore dey
-    // if (!gender || !contactNumber) {
-    //   toast.error("Gender and Contact Number are required");
-    //   return;
-    // }
 
     dispatch(setLoader(true));
     try {
-      // const bodyData = {
-      //   dateOfBirth,
-      //   gender,
-      //   contactNumber,
-      //   about,
-      // };
 
       const res = await apiConnector(
         "PUT",

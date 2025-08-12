@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import IconBtn from './../../common/IconBtn';
+import IconBtn from '../../../common/IconBtn';
 import { MdAddCircleOutline } from 'react-icons/md';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-hot-toast';
-import Input from '../Input';
+import Input from '../../Input';
+import { courses } from '../../../../services/apis';
+import {apiConnector} from '../../../../services/apiconnector'
+import { setCourse,setEditCourse,setStep } from '../../../../slices/courseSlice';
+import {setLoader} from '../../../../slices/loaderSlice';
+import NestedView from './NestedView';
 
-const CourseBuilderForm = () => {
+
+const CourseBuilder = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   const [editSectionName, setEditSectionName] = useState(null);
-  const { course } = useSelector((state) => state.course);
+  const {course} = useSelector((state) => state.course)
+
+  const {token} = useSelector((state)=>state.auth)
   const dispatch = useDispatch();
 
   const cancelEdit = () => {
@@ -23,6 +31,7 @@ const CourseBuilderForm = () => {
   };
 
   const goToNext = () => {
+    console.log("jsd")
     if (course.courseContent.length === 0) {
       toast.error("Please add at least one Section");
       return;
@@ -35,22 +44,45 @@ const CourseBuilderForm = () => {
   };
 
   const onSubmit = async (data) => {
-    setLoading(true);
+  dispatch(setLoader(true));
+
+  try {
     let result;
+
     if (editSectionName) {
-      result = await updateSection({
-        sectionName: data.sectionName,
-        sectionId: editSectionName,
-        courseId: course._id,
-      }, token);
+      // Updating an existing section
+      result = await updateSection(
+        {
+          sectionName: data.sectionName,
+          sectionId: editSectionName,
+        },
+        token
+      );
+      toast.success("Section updated successfully")
     } else {
-      result = await createSection({
-        sectionName: data.sectionName,
-        courseId: course._id,
-      });
+      // Creating a new section
+      const formData = new FormData();
+      formData.append("courseId", course._id);
+      formData.append("sectionName", data.sectionName);
+      formData.append("token", token);
+
+      result = await apiConnector(
+        "POST",
+        courses.ADD_SECTION_API,
+        formData
+      );
+      toast.success("Section created successfully")
     }
-    setLoading(false);
+    dispatch(setCourse(result.data.updatedCourseDetails));
+    // console.log("Section operation successful:", result);
+    } catch (error) {
+      console.error("Error in section operation:", error);
+      toast.error(error?.response?.data?.message || "Something went wrong");
+    } finally {
+      dispatch(setLoader(false));
+    }
   };
+
 
   return (
     <div className="p-6 bg-richblack-800 rounded-lg shadow-md text-white space-y-6">
@@ -101,7 +133,8 @@ const CourseBuilderForm = () => {
       {/* Sections view */}
       {course?.courseContent?.length > 0 && (
         <div className="border-t border-richblack-700 pt-4">
-          <NesteDView />
+          <NestedView
+          View course={course} />
         </div>
       )}
 
@@ -113,10 +146,10 @@ const CourseBuilderForm = () => {
         >
           Back
         </button>
-        <IconBtn text="Next" onclick={goToNext} />
+        <IconBtn text="Next" onClick={goToNext} />
       </div>
     </div>
   );
 };
 
-export default CourseBuilderForm;
+export default CourseBuilder;

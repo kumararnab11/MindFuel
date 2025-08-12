@@ -1,9 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { FaCheck } from "react-icons/fa";
-import CourseInfo from "./CourseInfo";
-import CourseBuilder from "./CourseBuilder";
+import CourseBuilder from "./CourseBuilder/CourseBuilder";
 import Publish from "./Publish";
+import CourseInfo from "./CourseInfo/CourseInfo";
 
 const steps = [
   { id: 1, title: "Course Information" },

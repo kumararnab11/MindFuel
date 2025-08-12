@@ -9,6 +9,7 @@ const {
     createCourse,
     getAllCourses,
     getCourseDetails,
+    updateCourse,
 } = require("../controllers/Course")
 
 // Categories Controllers Import
@@ -30,7 +31,7 @@ const {
     createSubSection,
     updateSubSection,
     deleteSubSection,
-} = require("../controllers/Subsection")
+} = require('../controllers/SubSection')
 
 // Rating Controllers Import
 const {
@@ -65,7 +66,7 @@ router.get("/getAllCourses", getAllCourses)
 // Get Details for a Specific Courses
 router.post("/getFullCourseDetails", getCourseDetails) // Typo: Should be getCourseDetails based on import
 // Edit Course
-// router.post("/editCourse", auth, isInstructor, editCourse) // This was commented out in the image but if you need it
+router.put("/editCourse", auth, isInstructor, updateCourse) // This was commented out in the image but if you need it
 
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)

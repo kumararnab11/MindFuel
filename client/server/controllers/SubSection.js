@@ -1,6 +1,7 @@
 const SubSection = require("../models/SubSection");
 const Section = require("../models/Section");
 const { uploadImageToCloudinary } = require("../utils/imageUploader"); // Assuming this utility exists
+const cloudinary = require('cloudinary').v2;
 
 //create SubSection
 exports.createSubSection = async (req, res) => {
@@ -40,7 +41,7 @@ exports.createSubSection = async (req, res) => {
 				},
 			},
 			{ new: true }
-		);
+		).populate({path:"subSection"})
 
 		//HW: log updated section here, after adding populate query
 		//return response
@@ -97,40 +98,53 @@ exports.updateSubSection = async (req,res)=>{
 
 //delete
 
-exports.deleteSubSection = async (req,res)=>{
-	try{
-		const {subSectionId}=req.body;
+exports.deleteSubSection = async (req, res) => {
+  try {
+    const { subSectionId, sectionId } = req.body;
 
-		if(!subSectionId){
-			return res.status(400).json({
-				success: false,
-				message: "subSectionId required",
-			}); 
-		}
+    if (!subSectionId || !sectionId) {
+      return res.status(400).json({
+        success: false,
+        message: "subSectionId and sectionId required",
+      });
+    }
 
-		//deleting video from cloudinary
+    // Find the subSection to get videoPublicId
+    const subSection = await SubSection.findById(subSectionId, "videoPublicId");
+    if (!subSection) {
+      return res.status(404).json({
+        success: false,
+        message: "Sub-section not found",
+      });
+    }
 
-		const subSection = await SubSection.findById(subSectionId, "videoPublicId");
+    // Delete video from Cloudinary
+    if (subSection.videoPublicId) {
+      await cloudinary.uploader.destroy(subSection.videoPublicId, {
+        resource_type: "video",
+      });
+    }
 
-		if(subSection?.videoPublicId){
-			await cloudinary.uploader.destroy(subSection.videoPublicId, {
-			resource_type: "video",
-			});
-		}
-		
-		//deleteing subsection
-		await SubSection.findByIdAndDelete(subSectionId);
+    // Delete the subSection document
+    await SubSection.findByIdAndDelete(subSectionId);
 
-		return res.status(200).json({
-			success: true,
-			message: "subSection Deleted Successfully",
-		});
-	}
-	catch(error){
-		return res.status(500).json({
-			success: false,
-			message: "Unable to delete subSection, please try again",
-			error: error.message,
-		});
-	}
-}
+    // Remove subSection ref from Section.subSection array
+    const updatedSection = await Section.findByIdAndUpdate(
+      sectionId,
+      { $pull: { subSection: subSectionId } },
+      { new: true }
+    ).populate({ path: "subSection" });
+
+    return res.status(200).json({
+      success: true,
+      message: "Sub-section deleted successfully",
+      updatedSection,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Unable to delete sub-section, please try again",
+      error: error.message,
+    });
+  }
+};

@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
-import { setCourse, setStep } from "../../../slices/courseSlice"
-import Input from '../Input'
+import {toast} from 'react-hot-toast'
+import { setCourse, setStep } from "../../../../slices/courseSlice"
+import Input from "../../Input"
 import RequirementField from "./RequirementField"
 import TagInput from "./TagInput"
-import ThumbnailUploader from "./ThumbnailUploader"
-import { categories,courses } from "../../../services/apis"
-import {apiConnector} from '../../../services/apiconnector'
-import {toast} from 'react-hot-toast'
+import ThumbnailUploader from '../ThumbnailUploader'
+import { courses,categories } from "../../../../services/apis"
+import { apiConnector } from "../../../../services/apiconnector"
 
 const CourseInfo = () => {
 
@@ -102,13 +102,12 @@ const CourseInfo = () => {
         "POST",
         courses.ADD_COURSE_API,
         formData,
-        /* headers */ undefined
       );
 
       if (res?.data?.success) {
-        console.log("Course created:", res.data.data);
+        console.log("Course created:", res.data);
         dispatch(setStep(2));
-        setCourse(res.data);
+        dispatch(setCourse(res.data.newCourse));
       } else {
         console.error("Create failed:", res?.data?.message);
       }

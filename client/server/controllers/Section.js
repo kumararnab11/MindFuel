@@ -83,21 +83,43 @@ exports.updateSection = async (req, res) => {
 };
 
 exports.deleteSection = async (req, res) => {
-	try {
-		//get ID - assuming that we are sending ID in params
-		const { sectionId } = req.params;
-		//use findByIdAndDelete
-		await Section.findByIdAndDelete(sectionId);
-		//return response
-		return res.status(200).json({
-			success: true,
-			message: "Section Deleted Successfully",
+  try {
+    const { sectionId, courseId } = req.body;
+
+    if (!sectionId || !courseId) {
+      return res.status(400).json({
+        success: false,
+        message: "Section Id and Course Id are required",
+      });
+    }
+	
+    // Step 1: Delete the section
+    await Section.findByIdAndDelete(sectionId);
+
+    // Step 2: Remove section reference from the course
+    const updated = await Course.findByIdAndUpdate(
+      courseId,
+      { $pull: { courseContent: sectionId } }, // Remove sectionId from array
+      { new: true }
+    ).populate({
+			path:"courseContent",
+			populate:{
+				path:"subSection"
+			}
 		});
-	} catch (error) {
-		return res.status(500).json({
-			success: false,
-			message: "Unable to delete Section, please try again",
-			error: error.message,
-		});
-	}
+
+    return res.status(200).json({
+      success: true,
+      message: "Section deleted and reference removed from course",
+	  updated
+    });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Unable to delete Section, please try again",
+      error: error.message,
+    });
+  }
 };

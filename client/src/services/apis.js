@@ -18,5 +18,10 @@ export const profile = {
 }
 
 export const courses = {
-  ADD_COURSE_API:BASE_URL+"/course/createCourse"
+  ADD_COURSE_API:BASE_URL+"/course/createCourse",
+  ADD_SECTION_API: BASE_URL + "/course/addSection",
+  DELETE_SECTION_API:BASE_URL+'/course/deleteSection',
+  ADD_SUBSECTION_API:BASE_URL+'/course/addSubSection',
+  DELETE_SUBSECTION_API:BASE_URL+'/course/deleteSubSection',
+  UPDATE_COURSE_API:BASE_URL+'/course/editCourse'
 }

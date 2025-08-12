@@ -79,7 +79,7 @@ exports.createCourse = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Course Created Successfully",
-      data: newCourse,
+      newCourse,
     });
   } catch (error) {
     console.error(error);
@@ -87,6 +87,54 @@ exports.createCourse = async (req, res) => {
       success: false,
       message: "Failed to create Course",
       error: error.message,
+    });
+  }
+};
+
+//update Course
+
+exports.updateCourse = async (req, res) => {
+  const { courseId, ...updates } = req.body;
+
+  if (!courseId) {
+    return res.status(400).json({ 
+      success: false,
+      message: "CourseId is required for updating the course."
+    });
+  }
+
+  try {
+    const updatedCourse = await Course.findByIdAndUpdate(
+      courseId, 
+      updates,  
+      { new: true} 
+    )
+    .populate({
+      path: "courseContent",
+      populate: {
+        path: "subSection"
+      }
+    })
+    .exec(); 
+
+    if (!updatedCourse) {
+      return res.status(404).json({
+        success: false,
+        message: "Course not found."
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Course updated successfully.",
+      updatedCourse
+    });
+  } catch (error) {
+    console.error(error); 
+    return res.status(500).json({
+      success: false,
+      message: "An error occurred while updating the course.",
+      error: error.message
     });
   }
 };

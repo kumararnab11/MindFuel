@@ -7,7 +7,7 @@ import { courses } from "../../../../services/apis";
 import { useDispatch, useSelector } from "react-redux";
 import { setCourse } from "../../../../slices/courseSlice";
 import toast from "react-hot-toast";
-import SubSectionModal from "./SubsectionModal";
+import SubSectionModal from "./SubSectionModal";
 
 const NestedView =()=> {
     const dispatch=useDispatch();

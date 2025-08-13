@@ -4,11 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite --port 3000",
     "build": "vite build",
     "preview": "vite preview",
-    "server": "cd server && npm run dev",
-    "dev": "concurrently -n \"client,server\" -c \"bgBlue,bgYellow\" \"npm start\" \"npm run server\""
+    "dev": "vite --port 3000"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",

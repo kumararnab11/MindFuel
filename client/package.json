@@ -6,7 +6,7 @@
   "scripts": {
     "build": "vite build",
     "preview": "vite preview",
-    "dev": "vite --port 3000"
+    "dev": "vite"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",

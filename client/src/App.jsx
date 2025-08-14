@@ -14,6 +14,7 @@ import MyProfile from './components/core/Dashboard/MyProfile'
 import Settings from './components/core/Dashboard/Settings'
 import AddCourse from './components/core/Dashboard/AddCourse'
 import Contact from './pages/Contact'
+import MyCourses from './pages/MyCourses'
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path='/dashboard/my-profile' element={<MyProfile/>}/>
           <Route path='/dashboard/settings' element={<Settings/>}/>
           <Route path="/dashboard/add-course" element={<AddCourse/>}/>
+          <Route path="/dashboard/my-courses" element={<MyCourses/>}/>
         </Route>
       </Routes>
     </div>

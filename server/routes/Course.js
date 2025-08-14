@@ -10,6 +10,8 @@ const {
     getAllCourses,
     getCourseDetails,
     updateCourse,
+    getInstructiorCourses,
+    deleteCourse,
 } = require("../controllers/Course")
 
 // Categories Controllers Import
@@ -67,6 +69,8 @@ router.get("/getAllCourses", getAllCourses)
 router.post("/getFullCourseDetails", getCourseDetails) // Typo: Should be getCourseDetails based on import
 // Edit Course
 router.put("/editCourse", auth, isInstructor, updateCourse) // This was commented out in the image but if you need it
+router.post("/getCoursesByInstructor", auth, isInstructor, getInstructiorCourses) // This was commented out in the image but if you need it
+router.post("/deleteCourse", auth, isInstructor, deleteCourse) // This was commented out in the image but if you need it
 
 // ********************************************************************************************************
 //                                      Category routes (Only by Admin)

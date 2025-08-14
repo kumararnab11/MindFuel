@@ -3,7 +3,7 @@ import { useForm} from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux';
 import { apiConnector } from '../../../services/apiconnector';
 import { courses } from '../../../services/apis';
-import { setCourse } from '../../../slices/courseSlice';
+import { resetCourseState, setCourse, setStep } from '../../../slices/courseSlice';
 import {toast} from 'react-hot-toast'
 
 function Publish() {
@@ -25,8 +25,12 @@ function Publish() {
     formData.append("status",data.checkBox?"Published":"Draft");
 
     try{
-      const res= await apiConnector("PUT",courses.UPDATE_COURSE_API,formData);
+      const res= await apiConnector("PUT",courses.UPDATE_COURSE_API,formData,
+        { Authorization: `Bearer ${token}` }
+      );
       dispatch(setCourse(res.data.updatedCourse));
+      dispatch(resetCourseState())
+      dispatch(setStep("1"));
       toast.success("Course Updatation Successful")
     }
     catch{

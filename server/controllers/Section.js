@@ -1,5 +1,6 @@
 const Section = require("../models/Section");
 const Course = require("../models/Course");
+const SubSection = require('../models/SubSection')
 
 exports.createSection = async (req, res) => {
 	try {
@@ -94,6 +95,13 @@ exports.deleteSection = async (req, res) => {
     }
 	
     // Step 1: Delete the section
+	const section = Section.findById(sectionId);
+	if(!section){
+
+	}
+	if (section.subSection.length > 0) { 
+		await SubSection.deleteMany({ _id: { $in: section.subSection } }); 
+	}
     await Section.findByIdAndDelete(sectionId);
 
     // Step 2: Remove section reference from the course

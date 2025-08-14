@@ -23,5 +23,7 @@ export const courses = {
   DELETE_SECTION_API:BASE_URL+'/course/deleteSection',
   ADD_SUBSECTION_API:BASE_URL+'/course/addSubSection',
   DELETE_SUBSECTION_API:BASE_URL+'/course/deleteSubSection',
-  UPDATE_COURSE_API:BASE_URL+'/course/editCourse'
+  UPDATE_COURSE_API:BASE_URL+'/course/editCourse',
+  GET_COURSES_BY_INSTRUCTOR_ID: BASE_URL + '/course/getCoursesByInstructor',
+  DELETE_COURSE: BASE_URL+'/course/deleteCourse'
 }

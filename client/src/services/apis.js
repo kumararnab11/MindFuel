@@ -2,6 +2,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const categories = {
   CATEGORIES_API: BASE_URL + "/course/showAllCategories",
+  COURSES_API: BASE_URL + '/course/getCategoryPageDetails'
 };
 
 export const auth = {

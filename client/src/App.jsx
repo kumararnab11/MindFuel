@@ -15,6 +15,7 @@ import Settings from './components/core/Dashboard/Settings'
 import AddCourse from './components/core/Dashboard/AddCourse'
 import Contact from './pages/Contact'
 import MyCourses from './pages/MyCourses'
+import { Catalog } from './pages/Catalog'
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
         <Route path="/verify-email"element={<Otp/>}/>
         <Route path="/about"element={<><Navbar/><AboutUs/></>}/>
         <Route path="/contact"element={<><Navbar/><Contact/></>}/>
+        <Route path="/catalog/:catalogName"element={<><Navbar/><Catalog/></>}/>
         <Route
           element={
             <PrivateRoute>

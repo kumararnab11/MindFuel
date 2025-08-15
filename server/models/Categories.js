@@ -8,10 +8,11 @@ const CategoriesSchema = new mongoose.Schema({
     description: {
         type: String,
     },
-    course: {
+    course: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
-    },
+        default:[],
+    }],
 });
 
 module.exports = mongoose.model("Categories", CategoriesSchema);

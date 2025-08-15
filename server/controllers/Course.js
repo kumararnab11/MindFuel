@@ -66,6 +66,16 @@ exports.createCourse = async (req, res) => {
       instruction
     });
 
+    //add new course in categories
+
+    await Categories.findByIdAndUpdate(
+      category,
+      {
+        $push: { course: newCourse._id } 
+      },
+      { new: true }
+    );
+
     //add the new course to the user schema of Instructor
     await User.findByIdAndUpdate(
       { _id: instructorDetails._id },

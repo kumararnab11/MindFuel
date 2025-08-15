@@ -30,7 +30,7 @@ function Publish() {
       );
       dispatch(setCourse(res.data.updatedCourse));
       dispatch(resetCourseState())
-      dispatch(setStep("1"));
+      dispatch(setStep(1));
       toast.success("Course Updatation Successful")
     }
     catch{

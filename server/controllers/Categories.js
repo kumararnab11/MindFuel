@@ -1,5 +1,4 @@
 const Categories = require("../models/Categories");
-const Category = require("../models/Categories");
 
 //create Category ka handler funciton
 exports.createCategory = async (req, res) => {
@@ -58,9 +57,15 @@ exports.categoryPageDetails = async (req, res) => {
         //get categoryId
         const {categoryId} = req.body;
         //get courses for specified categoryId
-        const selectedCategory = await Category.findById(categoryId)
-                                            .populate("courses")
-                                            .exec();
+        const selectedCategory = await Categories.findById(categoryId)
+                                            .populate({
+                                                path: "course",
+                                                populate: [
+                                                  { path: "instructor" },
+                                                  { path: "ratingAndReviews" }
+                                                ]
+                                              })
+                                              .exec();
 
         //validation
         if(!selectedCategory) {
@@ -70,38 +75,22 @@ exports.categoryPageDetails = async (req, res) => {
             });
         }
 
-        //get courses for different categories
-        const differentCategories = await Category.find({
+        //get courses for different categories except current categoty
+        const differentCategories = await Categories.find({
                                         _id: {$ne: categoryId},
                                     })
-                                    .populate("courses")
+                                    .populate("course")
                                     .exec();
 
-        //get top selling courses
-        const topSellingCourses = await Category.aggregate([
-          {
-              $addFields: {
-                  // Add a new field 'studentsEnrolledCount' which is the size of the array
-                  studentsEnrolledCount: { $size: "$studentsEnrolled" }
-              }
-          },
-          {
-              // Sort by the newly created count field in descending order
-              $sort: { studentsEnrolledCount: -1 }
-          },
-          {
-              //Limit the number of results, e.g., to get the top 10
-              $limit: 10
-          },
-          {
-              //to exclude the temporary 'studentsEnrolledCount' field
-              $project: {
-                  studentsEnrolledCount: 0 // Exclude this field
-              }
-          }
-      ]);
+        // Top Selling
+        const topSellingCourses = [...selectedCategory.course]
+          .sort((a, b) => b.studentsEnrolled.length - a.studentsEnrolled.length);
 
-      console.log(topSellingCourses);
+        // Newest
+        const newestCourses = [...selectedCategory.course]
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        //console.log(topSellingCourses);
 
         //return response
         return res.status(200).json({
@@ -109,6 +98,8 @@ exports.categoryPageDetails = async (req, res) => {
             data: {
                 selectedCategory,
                 differentCategories,
+                topSellingCourses,
+                newestCourses
             },
         });
     }

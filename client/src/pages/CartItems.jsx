@@ -3,11 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart, resetCart } from "../slices/cartSlice";
 import { toast } from "react-hot-toast";
 import { FaTrashCan } from "react-icons/fa6";
+import {useNavigate} from 'react-router-dom'
 
 function CartItems() {
   const { items, totalItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate()
   const handleRemove = (id) => {
     dispatch(removeFromCart(id));
   };
@@ -32,7 +33,9 @@ function CartItems() {
                 key={item.id}
                 className="flex items-center justify-between bg-richblack-800 p-4 rounded-lg shadow-md"
               >
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 cursor-pointer"
+                  onClick={()=>navigate(`/courses/${item.id}`)}
+                >
                   <img
                     src={item.image}
                     alt={item.name}
@@ -48,7 +51,7 @@ function CartItems() {
                 </div>
                 <button
                   onClick={() => handleRemove(item.id)}
-                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md transition"
+                  className="cursor-pointer px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-md transition"
                 >
                   <FaTrashCan/>
                 </button>

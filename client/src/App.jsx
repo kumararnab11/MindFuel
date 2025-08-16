@@ -16,6 +16,8 @@ import AddCourse from './components/core/Dashboard/AddCourse'
 import Contact from './pages/Contact'
 import MyCourses from './pages/MyCourses'
 import { Catalog } from './pages/Catalog'
+import CoursePage from './pages/CoursePage'
+import CartItems from './pages/CartItems'
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
         <Route path="/about"element={<><Navbar/><AboutUs/></>}/>
         <Route path="/contact"element={<><Navbar/><Contact/></>}/>
         <Route path="/catalog/:catalogName"element={<><Navbar/><Catalog/></>}/>
+        <Route path="/courses/:courseId"element={<><Navbar/><CoursePage/></>}/>
+        <Route path="/dashboard/cart"element={<><Navbar/><CartItems/></>}/>
         <Route
           element={
             <PrivateRoute>

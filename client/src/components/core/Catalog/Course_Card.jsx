@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import RatingStars from "./RatingStars";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import GetAvgRating from "../../../utils/avgRating";
 
 const Course_Card = ({ course, Height }) => {
   const [avgReviewCount, setAvgReviewCount] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const count = GetAvgRating(course.ratingAndReviews);

@@ -185,10 +185,11 @@ const Home = () => {
             user?.accountType !== 'Instructor'
             &&
             (
-                <div className='w-11/12 mx-auto max-w-[1080px] flex-col items-center justify-between gap-8 bg-richblack-900 text-white'>
+                <div className='w-11/12 mx-auto mb-15 max-w-[1080px] flex-col items-center justify-between gap-8 bg-richblack-900 text-white'>
                     <InstructorSection />
-                    <h2 className='text-center text-4xl font-semobold mt-10'>review from Other Learners</h2>
+                    {/* <h2 className='text-center text-4xl font-semobold mt-10'>review from Other Learners</h2> */}
                     {/* Review Slider here */}
+
                 </div>
             )
         }

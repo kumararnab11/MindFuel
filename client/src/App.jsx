@@ -1,9 +1,10 @@
 import './App.css'
-import {Route,Routes} from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Navbar from './components/common/Navbar'
+import Footer from './components/common/Footer'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import Otp from './pages/Otp'
@@ -23,17 +24,17 @@ function App() {
   return (
     <div className='w-screen min-h-screen bg-richblack-900 flex flex-col font-inter'>
       <Routes>
-        <Route path="/"element={<><Navbar/><Home/></>}/>
+        <Route path="/"element={<><Navbar/><Home/><Footer/></>}/>
         <Route path="/login"element={<Login/>}/>
         <Route path="/signup"element={<Signup/>}/>
         <Route path="/reset-password"element={<ForgotPassword/>}/>
         <Route path="/update-password/:token" element={<ResetPassword />} />
         <Route path="/verify-email"element={<Otp/>}/>
-        <Route path="/about"element={<><Navbar/><AboutUs/></>}/>
-        <Route path="/contact"element={<><Navbar/><Contact/></>}/>
-        <Route path="/catalog/:catalogName"element={<><Navbar/><Catalog/></>}/>
-        <Route path="/courses/:courseId"element={<><Navbar/><CoursePage/></>}/>
-        <Route path="/dashboard/cart"element={<><Navbar/><CartItems/></>}/>
+        <Route path="/about"element={<><Navbar/><AboutUs/><Footer/></>}/>
+        <Route path="/contact"element={<><Navbar/><Contact/><Footer/></>}/>
+        <Route path="/catalog/:catalogName"element={<><Navbar/><Catalog/><Footer/></>}/>
+        <Route path="/courses/:courseId"element={<><Navbar/><CoursePage/><Footer/></>}/>
+        <Route path="/dashboard/cart"element={<><Navbar/><CartItems/><Footer/></>}/>
         <Route
           element={
             <PrivateRoute>
@@ -47,6 +48,7 @@ function App() {
           <Route path="/dashboard/my-courses" element={<MyCourses/>}/>
         </Route>
       </Routes>
+
     </div>
   )
 }

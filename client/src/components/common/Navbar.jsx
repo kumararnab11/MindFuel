@@ -24,7 +24,7 @@ const Navbar = () => {
         //console.log("Printing Sublinks result:", result);
         setSubLinks(result.data.allCategories);
       } catch (error) {
-        console.log("Could not fetch the category list");
+        console.log("Could not fetch the category list" + error);
       }
     }
 
@@ -103,7 +103,7 @@ const Navbar = () => {
           </ul>
         </nav>
 
-        /* Login/SignUp/Dashboard */
+        {/* Login-SignUp-Dashboard */}
         <div className='flex gap-x-4 items-center'>
           {
             user && user?.accountType != "Instructor" && (

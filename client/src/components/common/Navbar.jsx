@@ -37,12 +37,14 @@ const Navbar = () => {
   }
 
   return (
-    <div className='flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700'>
+    // <div className='flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 '>
+    <div className='flex items-center justify-center border-b-[1px] border-b-richblack-700 p-0.8'>
       <div className='flex w-11/12 max-w-[1080px] items-center justify-between'>
         {/* Image */}
-        <Link to='/'>
-          <img src={logo} width={160} height={32} loading='lazy' />
-        </Link>
+          <Link to='/'>
+            {/* <img src={logo} width={160} height={32} loading='lazy' className="w-40 h-auto"/> */}
+            <img src={logo} loading='lazy' className="w-32 h-auto p-1"/>
+          </Link>
 
         {/* Nav Links */}
         <nav>
